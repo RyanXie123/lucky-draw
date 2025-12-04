@@ -20,7 +20,7 @@
             }"
           >
             {{ item.name ? item.name : item.key }}
-            <img v-if="item.photo" :src="item.photo" :width="50" :height="50" />
+            <img v-if="item.photo" :src="item.photo" :width="100" :height="100" />
           </a>
         </li>
       </ul>
@@ -33,28 +33,8 @@
             v-for="item in resArr"
             :key="item"
             class="itemres"
-            :style="resCardStyle"
-            :data-id="item"
             @click="showRes = false"
-            :class="{
-              numberOver:
-                !!photos.find((d) => d.id === item) ||
-                !!list.find((d) => d.key === item),
-            }"
           >
-            <span class="cont" v-if="!photos.find((d) => d.id === item)">
-              <span
-                v-if="!!list.find((d) => d.key === item)"
-                :style="{
-                  fontSize: '40px',
-                }"
-              >
-                {{ list.find((d) => d.key === item).name }}
-              </span>
-              <span v-else>
-                {{ item }}
-              </span>
-            </span>
             <img
               v-if="photos.find((d) => d.id === item)"
               :src="photos.find((d) => d.id === item).value"
@@ -62,6 +42,17 @@
               :width="160"
               :height="160"
             />
+            <span class="name-display">
+              <span v-if="photos.find((d) => d.id === item)">
+                {{ photos.find((d) => d.id === item).name }}
+              </span>
+              <span v-else-if="list.find((d) => d.key === item)">
+                {{ list.find((d) => d.key === item).name }}
+              </span>
+              <span v-else>
+                {{ item }}
+              </span>
+            </span>
           </span>
         </div>
       </div>
@@ -454,35 +445,36 @@ export default {
   .itemres {
     background: #fff;
     width: 160px;
-    height: 160px;
+    height: 200px;
     border-radius: 4px;
     border: 1px solid #ccc;
-    line-height: 160px;
     font-weight: bold;
     margin-right: 20px;
     margin-bottom: 20px;
     cursor: pointer;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     position: relative;
-    .cont {
-      display: flex;
-      justify-content: center;
-      align-items: center;
+    overflow: hidden;
+    img {
+      width: 160px;
+      height: 160px;
+      object-fit: cover;
     }
-    &.numberOver::before {
-      content: attr(data-id);
-      width: 30px;
-      height: 22px;
-      line-height: 22px;
-      background-color: #fff;
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      font-size: 14px;
-      // border-radius: 50%;
-      z-index: 1;
+    .name-display {
+      width: 100%;
+      text-align: center;
+      font-size: 28px;
+      font-weight: bold;
+      color: #333;
+      padding: 8px 5px;
+      line-height: 1.2;
+      word-break: break-all;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
   }
 }
